@@ -1,11 +1,15 @@
 import { Schema, model } from 'mongoose';
 import validator from 'validator';
-import { CarModel, TCar } from './interface';
+import { TCar } from './interface';
 
 // Define Car Schema
 const carSchema = new Schema<TCar>(
   {
-    id: { type: String, unique: true, required: true },
+    carName: {
+      type: String,
+      required: [true, 'carName is required'],
+      trim: true,
+    },
     email: {
       type: String,
       required: [true, 'Email is required'],
@@ -23,7 +27,11 @@ const carSchema = new Schema<TCar>(
       maxlength: [15, 'Brand name must be at most 15 characters long'],
       trim: true,
     },
-    model: { type: String, required: [true, 'Model is required'], trim: true },
+    model: {
+      type: String,
+      required: [true, 'Model is required'],
+      trim: true,
+    },
     year: {
       type: Number,
       required: [true, 'Year is required'],
@@ -50,19 +58,13 @@ const carSchema = new Schema<TCar>(
       required: [true, 'Quantity is required'],
       min: [0, 'Quantity must be a non-negative number'],
     },
-    inStock: { type: Boolean, required: [true, 'In stock status is required'] },
+    inStock: {
+      type: Boolean,
+      required: [true, 'In stock status is required'],
+    },
   },
   { timestamps: true },
 );
 
-carSchema.statics.isCarExists = async function (model: string, brand: string) {
-  const car = await this.findOne({ model, brand });
-  return car ? true : false;
-};
-
-// Create Indexes for email and _id to ensure uniqueness
-// carSchema.index({ email: 1 }, { unique: true });
-// carSchema.index({ _id: 1 }, { unique: true });
-
-// Exporting the model
-export const Car = model<TCar, CarModel>('Cars', carSchema);
+// Export the model for Car
+export const Car = model<TCar>('Car', carSchema);

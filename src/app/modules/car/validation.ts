@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 const carValidationSchema = z.object({
-  id: z.string().trim().min(1, 'ID is required'),
   carName: z.string().trim().min(1, 'Car name is required'),
   brand: z.string().trim().min(4, 'Brand is required').max(15),
   email: z.string().trim().email('Invalid email address'),
@@ -22,7 +21,6 @@ const carValidationSchema = z.object({
     .int()
     .nonnegative('Quantity must be a non-negative integer'),
   inStock: z.boolean(),
-}
-);
+});
 
 export default carValidationSchema;

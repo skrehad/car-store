@@ -1,15 +1,21 @@
 import express from 'express';
 import { CarController } from './controller';
 
-const router = express.Router();
+const CarRouter = express.Router();
 
-// for create student
-router.post('/create-car', CarController.createCar);
-// for get all student
-router.get('/', CarController.getAllCars);
-// for get one student data
-router.get('/:carId', CarController.getSingleCar);
-// for delete one student data
-// router.delete('/:carId', StudentController.deleteStudent);
+// Route for creating a car
+CarRouter.post('/create-car', CarController.createCar);
 
-export const CarRoutes = router;
+// Route for getting all cars
+CarRouter.get('/', CarController.getAllCars);
+
+// Route for getting a single car by its ID
+CarRouter.get('/:carId', CarController.getSingleCar);
+
+// Route for updating a car's data
+CarRouter.put('/:carId', CarController.updateACar);
+
+// Route for deleting a car
+CarRouter.delete('/:carId', CarController.deleteACar);
+
+export default CarRouter;

@@ -1,7 +1,5 @@
-import { Model } from 'mongoose';
-
 export type TCar = {
-  id: string;
+  carName: string;
   email: string;
   brand: string;
   model: string;
@@ -12,8 +10,3 @@ export type TCar = {
   quantity: number;
   inStock: boolean;
 };
-
-// for creating static
-export interface CarModel extends Model<TCar> {
-  isCarExists(model: string, brand: string): Promise<boolean>;
-}

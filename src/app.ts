@@ -1,6 +1,6 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
-import { CarRoutes } from './app/modules/car/route';
+import CarRouter from './app/modules/car/route';
 const app: Application = express();
 // const port = 3000;
 
@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 // application route
-app.use('/api/v1/cars', CarRoutes);
+app.use('/api/v1/cars', CarRouter);
 
 app.get('/', (req: Request, res: Response) => {});
 

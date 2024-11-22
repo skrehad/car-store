@@ -1,39 +1,44 @@
 import { TCar } from './interface';
 import { Car } from './model';
 
-const createCarInDb = async (carData: TCar) => {
-  if (await Car.isCarExists(carData.model, carData.brand)) {
-    throw new Error('Car already exists');
-  }
-
-  const result = await Car.create(carData); // Built-in method for saving the car
-
+// Create car in DB
+const createCarFromDB = (data: TCar) => {
+  const result = Car.create(data);
   return result;
 };
 
-const getAllCarsFromDb = async () => {
-  const result = await Car.find();
+// Get all cars from DB
+const getAllCarsFromDB = () => {
+  const result = Car.find();
   return result;
 };
 
-const getSingleCarFromDb = async (id: string) => {
-  const result = await Car.aggregate([
-    {
-      $match: { id: id },
-    },
-  ]);
-
+// Get single car from DB
+const getSingleCarFromDB = (id: string) => {
+  const result = Car.findById(id);
   return result;
 };
 
-// const deleteCarFromDb = async (id: string) => {
-//   const result = await Car.updateOne({ _id: id }, { isDeleted: true });
-//   return result;
-// };
+// Delete car from DB
+const deleteACarFromDB = (id: string) => {
+  const result = Car.findByIdAndDelete(id);
+  return result;
+};
 
-export const CarServices = {
-  createCarInDb,
-  getAllCarsFromDb,
-  getSingleCarFromDb,
-  // deleteCarFromDb,
+// Update car in DB
+const updateACarFromDB = (id: string, data: TCar) => {
+  // প্রথমে নিশ্চিত করুন যে id একটি সঠিক ObjectId, যেমন MongoDB আশা করে
+  const result = Car.findByIdAndUpdate(id, data, {
+    new: true, // নতুন আপডেট হওয়া ডেটা ফেরত দেয়
+    runValidators: true, // ভ্যালিডেশন চালু রাখে
+  });
+  return result;
+};
+
+export const CarService = {
+  createCarFromDB,
+  getAllCarsFromDB,
+  getSingleCarFromDB,
+  deleteACarFromDB,
+  updateACarFromDB,
 };
