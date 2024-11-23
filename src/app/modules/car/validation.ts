@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-// zod validations
+// carValidationSchema
 export const carValidationSchema = z.object({
   brand: z.string().trim().min(4, 'Brand is required').max(15),
   model: z.string().trim().min(4, 'Model is required').max(15),
