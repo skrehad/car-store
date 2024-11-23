@@ -19,8 +19,7 @@ const createCar = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     // Log validation errors
-    console.error('Validation Error:', error);
-    res.status(400).json({
+    res.status(404).json({
       success: false,
       message: error.message || 'Validation Failed or Something went wrong',
       error: error instanceof z.ZodError ? error.errors : error,
@@ -37,11 +36,11 @@ const getAllCars = async (req: Request, res: Response) => {
       message: 'Cars retrieved successfully',
       data: result,
     });
-  } catch (error) {
-    res.status(500).json({
+  } catch (error: any) {
+    res.status(404).json({
       success: false,
-      message: 'Cars cannot be retrieved',
-      error,
+      message: error.message || 'Validation Failed or Something went wrong',
+      error: error instanceof z.ZodError ? error.errors : error,
     });
   }
 };
@@ -56,11 +55,11 @@ const getSingleCar = async (req: Request, res: Response) => {
       message: 'Car retrieved successfully',
       data: result,
     });
-  } catch (error) {
-    res.status(500).json({
+  } catch (error: any) {
+    res.status(404).json({
       success: false,
-      message: 'Car cannot be retrieved',
-      error,
+      message: error.message || 'Validation Failed or Something went wrong',
+      error: error instanceof z.ZodError ? error.errors : error,
     });
   }
 };
@@ -71,7 +70,7 @@ const deleteACar = async (req: Request, res: Response) => {
     const { carId } = req.params;
     const result = await CarService.deleteACarFromDB(carId);
     if (!result) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         message: 'Car not found',
       });
@@ -81,11 +80,11 @@ const deleteACar = async (req: Request, res: Response) => {
       message: 'Car deleted successfully',
       data: {},
     });
-  } catch (error) {
-    res.status(500).json({
+  } catch (error: any) {
+    res.status(404).json({
       success: false,
-      message: 'Car cannot be deleted',
-      error,
+      message: error.message || 'Validation Failed or Something went wrong',
+      error: error instanceof z.ZodError ? error.errors : error,
     });
   }
 };
@@ -103,11 +102,11 @@ const updateACar = async (req: Request, res: Response) => {
       message: 'Car updated successfully',
       data: result,
     });
-  } catch (error) {
-    res.status(500).json({
+  } catch (error: any) {
+    res.status(404).json({
       success: false,
-      message: 'Car cannot be updated',
-      error,
+      message: error.message || 'Validation Failed or Something went wrong',
+      error: error instanceof z.ZodError ? error.errors : error,
     });
   }
 };

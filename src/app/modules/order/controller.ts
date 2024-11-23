@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { Car } from '../car/model';
 import { orderService } from './services';
 import { OrderModel } from './model';
+import { z } from 'zod';
 
 // Order a Car
 const orderACar = async (req: Request, res: Response) => {
@@ -12,14 +13,15 @@ const orderACar = async (req: Request, res: Response) => {
     const findCar = await Car.findById(car);
 
     if (!findCar) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         message: 'Car Not Found',
       });
+      return;
     }
 
     if (quantity > findCar.quantity) {
-      return res.status(400).json({
+      res.status(404).json({
         success: false,
         message: 'Insufficient stock',
         error: 'Validation Error',
@@ -52,11 +54,11 @@ const orderACar = async (req: Request, res: Response) => {
       message: 'Order created successfully',
       data: result,
     });
-  } catch (error) {
-    res.status(500).json({
+  } catch (error: any) {
+    res.status(404).json({
       success: false,
-      message: 'Order could not be created',
-      error,
+      message: error.message || 'Validation Failed or Something went wrong',
+      error: error instanceof z.ZodError ? error.errors : error,
     });
   }
 };
@@ -83,11 +85,11 @@ const calculateRevenue = async (req: Request, res: Response) => {
         totalSalary: revenue[0].totalSalary,
       },
     });
-  } catch (error) {
-    res.status(500).json({
+  } catch (error: any) {
+    res.status(404).json({
       success: false,
-      message: 'Failed to calculate revenue',
-      error,
+      message: error.message || 'Validation Failed or Something went wrong',
+      error: error instanceof z.ZodError ? error.errors : error,
     });
   }
 };

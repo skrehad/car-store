@@ -4,7 +4,7 @@ import { CarController } from './controller';
 const CarRouter = express.Router();
 
 // Route for creating a car
-CarRouter.post('/create-car', CarController.createCar);
+CarRouter.post('/', CarController.createCar);
 
 // Route for getting all cars
 CarRouter.get('/', CarController.getAllCars);
