@@ -7,6 +7,7 @@ async function main() {
     await mongoose.connect(config.database_url as string, {
       serverSelectionTimeoutMS: 30000,
     });
+
     app.listen(config.port, () => {
       console.log(`App is listening on Port ${config.port}`);
     });
