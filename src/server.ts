@@ -4,7 +4,10 @@ import config from './app/config';
 
 async function main() {
   try {
-    await mongoose.connect(config.database_url as string);
+    await mongoose.connect(config.database_url as string, {
+      serverSelectionTimeoutMS: 20000,
+      connectTimeoutMS: 20000,
+    });
     app.listen(config.port, () => {
       console.log(`App is listening on Port ${config.port}`);
     });
