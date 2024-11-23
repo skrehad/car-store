@@ -1,5 +1,4 @@
 import { Schema, model } from 'mongoose';
-import validator from 'validator';
 import { TCar } from './interface';
 
 // Define Car Schema

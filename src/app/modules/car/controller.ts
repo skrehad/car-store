@@ -5,8 +5,6 @@ import { carValidationSchema } from './validation';
 
 // Create Car From DB
 const createCar = async (req: Request, res: Response) => {
-  console.log('Request Body:', req.body); // Log request body
-
   try {
     const carData = req.body;
     const validated = carValidationSchema.parse(carData); // Validate data

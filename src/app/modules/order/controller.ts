@@ -3,11 +3,12 @@ import { Car } from '../car/model';
 import { orderService } from './services';
 import { OrderModel } from './model';
 import { z } from 'zod';
+import { orderValidationSchema } from './validation';
 
 // Order a Car
 const orderACar = async (req: Request, res: Response) => {
   try {
-    const data = req.body;
+    const data = orderValidationSchema.parse(req.body);
     const { email, car, quantity, totalPrice } = data;
 
     // Find the car by ID
