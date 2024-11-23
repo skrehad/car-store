@@ -2,9 +2,7 @@ import { z } from 'zod';
 
 // zod validations
 export const carValidationSchema = z.object({
-  carName: z.string().trim().min(1, 'Car name is required'),
   brand: z.string().trim().min(4, 'Brand is required').max(15),
-  email: z.string().trim().email('Invalid email address'),
   model: z.string().trim().min(4, 'Model is required').max(15),
   year: z
     .number()

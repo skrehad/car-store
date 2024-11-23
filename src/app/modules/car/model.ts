@@ -5,21 +5,6 @@ import { TCar } from './interface';
 // Define Car Schema
 const carSchema = new Schema<TCar>(
   {
-    carName: {
-      type: String,
-      required: [true, 'carName is required'],
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: [true, 'Email is required'],
-      unique: true,
-      trim: true,
-      validate: {
-        validator: (value: string) => validator.isEmail(value),
-        message: '{VALUE} is not a valid email',
-      },
-    },
     brand: {
       type: String,
       required: [true, 'Brand is required'],

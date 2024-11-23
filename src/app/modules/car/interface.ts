@@ -1,6 +1,4 @@
 export type TCar = {
-  carName: string;
-  email: string;
   brand: string;
   model: string;
   year: number;
