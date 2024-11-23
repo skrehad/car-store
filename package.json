@@ -6,7 +6,7 @@
   "scripts": {
     "start:prod": "node ./dist/app/server.js",
     "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "npm run build": "tsc",
+    "build": "tsc",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
