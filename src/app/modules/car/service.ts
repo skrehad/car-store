@@ -26,12 +26,11 @@ const deleteACarFromDB = (id: string) => {
 };
 
 // Update car in DB
-const updateACarFromDB = (id: string, data: TCar) => {
-  // প্রথমে নিশ্চিত করুন যে id একটি সঠিক ObjectId, যেমন MongoDB আশা করে
-  const result = Car.findByIdAndUpdate(id, data, {
-    new: true, // নতুন আপডেট হওয়া ডেটা ফেরত দেয়
-    runValidators: true, // ভ্যালিডেশন চালু রাখে
+const updateACarFromDB = (id: string, carData: TCar) => {
+  const result = Car.findByIdAndUpdate(id, carData, {
+    new: true,
   });
+
   return result;
 };
 

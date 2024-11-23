@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { CarService } from './service';
 import { z } from 'zod';
-import carValidationSchema from './validation';
+import { carValidationSchema } from './validation';
 
 // Create Car From DB
 const createCar = async (req: Request, res: Response) => {
@@ -93,8 +93,9 @@ const deleteACar = async (req: Request, res: Response) => {
 // Update a Car From DB
 const updateACar = async (req: Request, res: Response) => {
   try {
-    const { carId } = req.params; // এখানে carId ঠিকভাবে পাস করুন
-    const { car: carData } = req.body; // carData ব্যবহার করুন
+    const { carId } = req.params;
+    const carData = req.body;
+    // console.log(carId);
 
     const result = await CarService.updateACarFromDB(carId, carData);
     res.status(200).json({
