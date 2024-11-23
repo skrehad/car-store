@@ -2,11 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.carValidationSchema = void 0;
 const zod_1 = require("zod");
-// zod validations
+// carValidationSchema
 exports.carValidationSchema = zod_1.z.object({
-    carName: zod_1.z.string().trim().min(1, 'Car name is required'),
     brand: zod_1.z.string().trim().min(4, 'Brand is required').max(15),
-    email: zod_1.z.string().trim().email('Invalid email address'),
     model: zod_1.z.string().trim().min(4, 'Model is required').max(15),
     year: zod_1.z
         .number()

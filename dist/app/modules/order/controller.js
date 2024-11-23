@@ -14,11 +14,13 @@ const model_1 = require("../car/model");
 const services_1 = require("./services");
 const model_2 = require("./model");
 const zod_1 = require("zod");
+const validation_1 = require("./validation");
 // Order a Car
 const orderACar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const data = req.body;
+        const data = validation_1.orderValidationSchema.parse(req.body);
         const { email, car, quantity, totalPrice } = data;
+        // Find the car by ID
         const findCar = yield model_1.Car.findById(car);
         if (!findCar) {
             res.status(404).json({
@@ -27,6 +29,7 @@ const orderACar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
             return;
         }
+        // Check if there is sufficient stock
         if (quantity > findCar.quantity) {
             res.status(404).json({
                 success: false,
@@ -34,22 +37,26 @@ const orderACar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 error: 'Validation Error',
             });
         }
-        // const calculatedTotalPrice = quantity * findCar.price;
+        // If stock is sufficient, calculate the total price
         const calculatedTotalPrice = quantity * totalPrice;
+        // Create the order object
         const order = {
             email,
             car,
             quantity,
             totalPrice: calculatedTotalPrice,
         };
+        // Create the order in DB (don't update stock yet)
         const result = yield services_1.orderService.createOrderInDB(order);
-        // Update Car Inventory
+        // Update the car inventory after order is created
         const updatedQuantity = findCar.quantity - quantity;
         const updateCarData = {
             quantity: updatedQuantity,
             inStock: updatedQuantity > 0,
         };
+        // Only update stock if the order was created successfully
         yield model_1.Car.findByIdAndUpdate(car, updateCarData);
+        // Send success response
         res.status(200).json({
             success: true,
             message: 'Order created successfully',
@@ -57,6 +64,7 @@ const orderACar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     catch (error) {
+        // Handle any unexpected errors
         res.status(404).json({
             success: false,
             message: error.message || 'Validation Failed or Something went wrong',

@@ -15,15 +15,16 @@ const orderACar = async (req: Request, res: Response) => {
     const findCar = await Car.findById(car);
 
     if (!findCar) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         message: 'Car Not Found',
       });
+      return;
     }
 
     // Check if there is sufficient stock
     if (quantity > findCar.quantity) {
-      return res.status(400).json({
+      res.status(404).json({
         success: false,
         message: 'Insufficient stock',
         error: 'Validation Error',
@@ -55,14 +56,14 @@ const orderACar = async (req: Request, res: Response) => {
     await Car.findByIdAndUpdate(car, updateCarData);
 
     // Send success response
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       message: 'Order created successfully',
       data: result,
     });
   } catch (error: any) {
     // Handle any unexpected errors
-    return res.status(500).json({
+    res.status(404).json({
       success: false,
       message: error.message || 'Validation Failed or Something went wrong',
       error: error instanceof z.ZodError ? error.errors : error,

@@ -1,28 +1,9 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Car = void 0;
 const mongoose_1 = require("mongoose");
-const validator_1 = __importDefault(require("validator"));
 // Define Car Schema
 const carSchema = new mongoose_1.Schema({
-    carName: {
-        type: String,
-        required: [true, 'carName is required'],
-        trim: true,
-    },
-    email: {
-        type: String,
-        required: [true, 'Email is required'],
-        unique: true,
-        trim: true,
-        validate: {
-            validator: (value) => validator_1.default.isEmail(value),
-            message: '{VALUE} is not a valid email',
-        },
-    },
     brand: {
         type: String,
         required: [true, 'Brand is required'],

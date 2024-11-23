@@ -15,7 +15,6 @@ const zod_1 = require("zod");
 const validation_1 = require("./validation");
 // Create Car From DB
 const createCar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('Request Body:', req.body); // Log request body
     try {
         const carData = req.body;
         const validated = validation_1.carValidationSchema.parse(carData); // Validate data
