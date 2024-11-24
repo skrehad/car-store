@@ -8,8 +8,17 @@ const createCarFromDB = (data) => {
     return result;
 };
 // Get all cars from DB
-const getAllCarsFromDB = () => {
-    const result = model_1.Car.find();
+const getAllCarsFromDB = (searchTerm) => {
+    const filter = searchTerm
+        ? {
+            $or: [
+                { brand: { $regex: searchTerm, $options: 'i' } },
+                { model: { $regex: searchTerm, $options: 'i' } },
+                { category: { $regex: searchTerm, $options: 'i' } },
+            ],
+        }
+        : {};
+    const result = model_1.Car.find(filter);
     return result;
 };
 // Get single car from DB

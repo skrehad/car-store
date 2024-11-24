@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { CarService } from './service';
 import { z } from 'zod';
 import { carValidationSchema } from './validation';
@@ -26,29 +26,37 @@ const createCar = async (req: Request, res: Response) => {
 };
 
 // Get All Cars From DB
-const getAllCars = async (req: Request, res: Response) => {
+const getAllCars = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   try {
     const searchTerm = req.query.searchTerm as string;
     const result = await CarService.getAllCarsFromDB(searchTerm);
     if (result.length === 0) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         message: 'No cars found matching your search criteria.',
         data: [],
       });
+      return;
     }
     res.status(200).json({
       success: true,
       message: 'Cars retrieved successfully',
       data: result,
     });
+    return;
   } catch (error: any) {
     res.status(404).json({
       success: false,
       message: error.message || 'Validation Failed or Something went wrong',
       error: error instanceof z.ZodError ? error.errors : error,
     });
+    return;
   }
+  next();
 };
 
 // Get Single Car From DB

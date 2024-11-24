@@ -16,7 +16,7 @@ const model_2 = require("./model");
 const zod_1 = require("zod");
 const validation_1 = require("./validation");
 // Order a Car
-const orderACar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const orderACar = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = validation_1.orderValidationSchema.parse(req.body);
         const { email, car, quantity, totalPrice } = data;
@@ -36,6 +36,7 @@ const orderACar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 message: 'Insufficient stock',
                 error: 'Validation Error',
             });
+            return;
         }
         // If stock is sufficient, calculate the total price
         const calculatedTotalPrice = quantity * totalPrice;
@@ -62,6 +63,7 @@ const orderACar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             message: 'Order created successfully',
             data: result,
         });
+        return;
     }
     catch (error) {
         // Handle any unexpected errors
@@ -71,6 +73,7 @@ const orderACar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             error: error instanceof zod_1.z.ZodError ? error.errors : error,
         });
     }
+    next();
 });
 // Calculate Revenue
 const calculateRevenue = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

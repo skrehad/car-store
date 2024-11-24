@@ -35,14 +35,24 @@ const createCar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 // Get All Cars From DB
-const getAllCars = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllCars = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = yield service_1.CarService.getAllCarsFromDB();
+        const searchTerm = req.query.searchTerm;
+        const result = yield service_1.CarService.getAllCarsFromDB(searchTerm);
+        if (result.length === 0) {
+            res.status(404).json({
+                success: false,
+                message: 'No cars found matching your search criteria.',
+                data: [],
+            });
+            return;
+        }
         res.status(200).json({
             success: true,
             message: 'Cars retrieved successfully',
             data: result,
         });
+        return;
     }
     catch (error) {
         res.status(404).json({
@@ -50,7 +60,9 @@ const getAllCars = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             message: error.message || 'Validation Failed or Something went wrong',
             error: error instanceof zod_1.z.ZodError ? error.errors : error,
         });
+        return;
     }
+    next();
 });
 // Get Single Car From DB
 const getSingleCar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
