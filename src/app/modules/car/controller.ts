@@ -28,7 +28,15 @@ const createCar = async (req: Request, res: Response) => {
 // Get All Cars From DB
 const getAllCars = async (req: Request, res: Response) => {
   try {
-    const result = await CarService.getAllCarsFromDB();
+    const searchTerm = req.query.searchTerm as string;
+    const result = await CarService.getAllCarsFromDB(searchTerm);
+    if (result.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'No cars found matching your search criteria.',
+        data: [],
+      });
+    }
     res.status(200).json({
       success: true,
       message: 'Cars retrieved successfully',
