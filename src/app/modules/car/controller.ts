@@ -78,7 +78,7 @@ const getSingleCar = async (req: Request, res: Response) => {
   }
 };
 
-// Delete a Car From DB
+// Delete a Car
 const deleteACar = async (req: Request, res: Response) => {
   try {
     const { carId } = req.params;
